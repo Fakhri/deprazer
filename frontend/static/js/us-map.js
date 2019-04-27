@@ -27,9 +27,10 @@ var path = d3.geo.path()               // path generator that will convert GeoJS
 
 // Define linear scale for output
 var color = d3.scale.linear()
-    .range(["rgb(213,222,217)", "rgb(69,173,168)", "rgb(84,36,55)", "rgb(217,91,67)"]);
+    .range(["rgb(210, 234, 192)", "rgb(224, 215, 148)", "rgb(234, 150, 93)", "rgb(234, 93, 93)"]);
+    // .range(["rgb(213,222,217)", "rgb(69,173,168)", "rgb(84,36,55)", "rgb(217,91,67)"]);
 
-var legendText = ["Cities Lived", "States Lived", "States Visited", "Nada"];
+var legendText = ["Dangerous", "High", "Medium", "Low"];
 
 //Create SVG element and append map to the SVG
 var svg = d3.select("body")
@@ -43,8 +44,9 @@ var div = d3.select("body")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
-// Load in my states data!
-d3.csv("/static/data/stateslived.csv", function (data) {
+    // Load in my states data!
+    // d3.csv("/static/data/stateslived.csv", function (data) {
+function draw(data) {
     color.domain([0, 1, 2, 3]); // setting the range of the input data
 
     // Load GeoJSON data and merge with states data
@@ -57,7 +59,7 @@ d3.csv("/static/data/stateslived.csv", function (data) {
             var dataState = data[i].state;
 
             // Grab data value 
-            var dataValue = data[i].visited;
+            var dataValue = data[i].depression;
 
             // Find the corresponding state inside the GeoJSON
             for (var j = 0; j < json.features.length; j++) {
@@ -66,7 +68,7 @@ d3.csv("/static/data/stateslived.csv", function (data) {
                 if (dataState == jsonState) {
 
                     // Copy the data value into the JSON
-                    json.features[j].properties.visited = dataValue;
+                    json.features[j].properties.depression = dataValue;
 
                     // Stop looking through the JSON
                     break;
@@ -85,15 +87,25 @@ d3.csv("/static/data/stateslived.csv", function (data) {
             .style("fill", function (d) {
 
                 // Get data value
-                var value = d.properties.visited;
+                var value = d.properties.depression;
 
-                if (value) {
-                    //If value exists…
-                    return color(value);
+                console.log(value + " " + d.properties.depression);
+                if (value > 0.7) {
+                    return color(3);
+                } else if (value > 0.5) {
+                    return color(2);
+                } else if (value > 0.2) {
+                    return color(1);
                 } else {
-                    //If value is undefined…
-                    return "rgb(213,222,217)";
+                    return color(0);
                 }
+                // if (value >= 0) {
+                //     //If value exists…
+                //     return color(value);
+                // } else {
+                //     //If value is undefined…
+                //     return "rgb(213,222,217)";
+                // }
             });
 
 
@@ -158,5 +170,6 @@ d3.csv("/static/data/stateslived.csv", function (data) {
             .attr("dy", ".35em")
             .text(function (d) { return d; });
     });
+}
 
-});
+// });
