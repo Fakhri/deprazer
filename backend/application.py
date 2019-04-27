@@ -16,7 +16,7 @@ application = Flask(__name__, template_folder=template_dir, static_folder=static
 @application.route("/")
 def home():
   # sample data - start
-  data = [
+  state_data = [
     {"state": "Alabama", "depression": 0.6, "keywords": "depression,anxiety,drug,love,suffer"},
     {"state": "Alaska", "depression": 0.4,  "keywords": "depression,anxiety,drug,love,suffer"},
     {"state": "Arkansas", "depression": 0.9,  "keywords": "depression,anxiety,drug,love,suffer"},
@@ -68,9 +68,16 @@ def home():
     {"state": "West Virginia", "depression": 0.6,  "keywords": "depression,anxiety,drug,love,suffer"},
     {"state": "Wyoming", "depression": 0.1,  "keywords": "depression,anxiety,drug,love,suffer"}
   ]
+
+  city_data = [
+    {"depression": 14, "place": "New York City", "lat": 40.71455, "lon": -74.007124},
+    {"depression": 20, "place": "San Francisco", "lat": 37.7771187, "lon": -122.4196396},
+    {"depression": 10, "place": "Tucson", "lat": 32.22155, "lon": -110.9697571},
+    {"depression": 9, "place": "Washington DC", "lat": 38.8903694, "lon": -77.0319595}
+  ]
   # sample data - end
 
-  return render_template('index.html', data=json.dumps(data))
+  return render_template('index.html', data=json.dumps(state_data), city_data=json.dumps(city_data))
  
 if __name__ == "__main__":
     application.run(debug=True)

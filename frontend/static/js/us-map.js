@@ -43,7 +43,7 @@ var div = d3.select("body")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
-function draw(data) {
+function draw(data, cityData) {
     color.domain([0, 1, 2, 3]); // setting the range of the input data
 
     // Load GeoJSON data and merge with states data
@@ -119,42 +119,41 @@ function draw(data) {
 
 
         // Map the cities I have lived in!
-        d3.csv("/static/data/cities-lived.csv", function (data) {
+        // d3.csv("/static/data/cities-lived.csv", function (data) {
 
-            svg.selectAll("circle")
-                .data(data)
-                .enter()
-                .append("circle")
-                .attr("cx", function (d) {
-                    return projection([d.lon, d.lat])[0];
-                })
-                .attr("cy", function (d) {
-                    return projection([d.lon, d.lat])[1];
-                })
-                .attr("r", function (d) {
-                    return Math.sqrt(d.years) * 4;
-                })
-                .style("fill", "rgb(217,91,67)")
-                .style("opacity", 0.85)
+        svg.selectAll("circle")
+            .data(cityData)
+            .enter()
+            .append("circle")
+            .attr("cx", function (d) {
+                return projection([d.lon, d.lat])[0];
+            })
+            .attr("cy", function (d) {
+                return projection([d.lon, d.lat])[1];
+            })
+            .attr("r", function (d) {
+                return Math.sqrt(d.depression) * 4;
+            })
+            .style("fill", "rgb(91, 3, 3)")
+            .style("opacity", 0.85)
+            // Modification of custom tooltip code provided by Malcolm Maclean, "D3 Tips and Tricks" 
+            // http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
+            .on("mouseover", function (d) {
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                div.text(d.place)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+            })
 
-                // Modification of custom tooltip code provided by Malcolm Maclean, "D3 Tips and Tricks" 
-                // http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
-                .on("mouseover", function (d) {
-                    div.transition()
-                        .duration(200)
-                        .style("opacity", .9);
-                    div.text(d.place)
-                        .style("left", (d3.event.pageX) + "px")
-                        .style("top", (d3.event.pageY - 28) + "px");
-                })
-
-                // fade out tooltip on mouse out               
-                .on("mouseout", function (d) {
-                    div.transition()
-                        .duration(500)
-                        .style("opacity", 0);
-                });
-        });
+            // fade out tooltip on mouse out               
+            .on("mouseout", function (d) {
+                div.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            });
+        // });
 
         // Modified Legend Code from Mike Bostock: http://bl.ocks.org/mbostock/3888852
         var legend = d3.select("body").append("svg")
