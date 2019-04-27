@@ -28,7 +28,6 @@ var path = d3.geo.path()               // path generator that will convert GeoJS
 // Define linear scale for output
 var color = d3.scale.linear()
     .range(["rgb(210, 234, 192)", "rgb(224, 215, 148)", "rgb(234, 150, 93)", "rgb(234, 93, 93)"]);
-    // .range(["rgb(213,222,217)", "rgb(69,173,168)", "rgb(84,36,55)", "rgb(217,91,67)"]);
 
 var legendText = ["Dangerous", "High", "Medium", "Low"];
 
@@ -44,8 +43,6 @@ var div = d3.select("body")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
-    // Load in my states data!
-    // d3.csv("/static/data/stateslived.csv", function (data) {
 function draw(data) {
     color.domain([0, 1, 2, 3]); // setting the range of the input data
 
@@ -61,6 +58,8 @@ function draw(data) {
             // Grab data value 
             var dataValue = data[i].depression;
 
+            var dataKeywords = data[i].keywords;
+
             // Find the corresponding state inside the GeoJSON
             for (var j = 0; j < json.features.length; j++) {
                 var jsonState = json.features[j].properties.name;
@@ -69,6 +68,7 @@ function draw(data) {
 
                     // Copy the data value into the JSON
                     json.features[j].properties.depression = dataValue;
+                    json.features[j].properties.keywords = dataKeywords;
 
                     // Stop looking through the JSON
                     break;
@@ -89,7 +89,6 @@ function draw(data) {
                 // Get data value
                 var value = d.properties.depression;
 
-                console.log(value + " " + d.properties.depression);
                 if (value > 0.7) {
                     return color(3);
                 } else if (value > 0.5) {
@@ -99,13 +98,23 @@ function draw(data) {
                 } else {
                     return color(0);
                 }
-                // if (value >= 0) {
-                //     //If value exists…
-                //     return color(value);
-                // } else {
-                //     //If value is undefined…
-                //     return "rgb(213,222,217)";
-                // }
+            })
+            // Modification of custom tooltip code provided by Malcolm Maclean, "D3 Tips and Tricks" 
+            // http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
+            .on("mouseover", function (d) {
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                div.text(d.properties.keywords)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+            })
+
+            // fade out tooltip on mouse out               
+            .on("mouseout", function (d) {
+                div.transition()
+                    .duration(500)
+                    .style("opacity", 0);
             });
 
 
