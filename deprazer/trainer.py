@@ -27,22 +27,26 @@ class Trainer(object):
         val_steps, val_batches = generate_batch(val_corpus, self.trainer_config.batch_size,
                                                 preprocessor=self.preprocessor)
 
-        optimizer = None
-        if self.trainer_config.optimizer == 'adam':
-            optimizer = Adam(lr=self.trainer_config.learning_rate,
-                             clipvalue=self.trainer_config.clip_gradients)
-        elif self.trainer_config.optimizer == 'sgd':
-            optimizer = SGD(lr=self.trainer_config.learning_rate,
-                            clipvalue=self.trainer_config.clip_gradients)
+        if not self.model.is_compiled:
+            optimizer = None
+            if self.trainer_config.optimizer == 'adam':
+                optimizer = Adam(lr=self.trainer_config.learning_rate,
+                                 clipvalue=self.trainer_config.clip_gradients)
+            elif self.trainer_config.optimizer == 'sgd':
+                optimizer = SGD(lr=self.trainer_config.learning_rate,
+                                clipvalue=self.trainer_config.clip_gradients)
 
-        self.model.compile(loss='categorical_crossentropy', optimizer=optimizer)
+            self.model.compile(loss='binary_crossentropy', metrics=['binary_accuracy'],
+                               optimizer=optimizer)
+            self.model.is_compiled = True
 
         # Prepare callbacks
-        callbacks = get_callbacks(early_stopping=self.trainer_config.early_stopping,
-                                  patience=self.trainer_config.patience,
-                                  valid=(val_steps, val_batches, self.preprocessor))
+        if self.trainer_config.early_stopping:
+            callbacks = [EarlyStopping(monitor='val_binary_accuracy',
+                                       patience=self.trainer_config.patience, mode='max')]
 
         # Train the model
         self.model.fit_generator(generator=train_batches, steps_per_epoch=train_steps,
+                                 validation_data=val_batches, validation_steps=val_steps,
                                  verbose=1, epochs=self.trainer_config.max_epoch,
                                  callbacks=callbacks)

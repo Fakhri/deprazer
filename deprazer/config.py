@@ -17,8 +17,14 @@ class BaseConfig(object):
 class ModelConfig(BaseConfig):
     """Wrapper class for model hyperparameters."""
 
-    def __init__(self):
-        self.input_size = None
+    def __init__(self, char_emb_size=25, char_lstm_units=25, word_lstm_units=100, fc_units=100,
+                 dropout=0.5):
+        self.char_vocab_size = None
+        self.char_embedding_size = char_emb_size
+        self.char_lstm_units = char_lstm_units
+        self.dropout = dropout
+        self.word_lstm_units = word_lstm_units
+        self.fc_units = fc_units
 
 class TrainerConfig(object):
     """Wrapper class for training hyperparameters."""
