@@ -117,10 +117,6 @@ function draw(data, cityData) {
                     .style("opacity", 0);
             });
 
-
-        // Map the cities I have lived in!
-        // d3.csv("/static/data/cities-lived.csv", function (data) {
-
         svg.selectAll("circle")
             .data(cityData)
             .enter()
@@ -134,7 +130,7 @@ function draw(data, cityData) {
             .attr("r", function (d) {
                 return Math.sqrt(d.depression) * 4;
             })
-            .style("fill", "rgb(91, 3, 3)")
+            .style("fill", "rgb(202, 105, 229)")
             .style("opacity", 0.85)
             // Modification of custom tooltip code provided by Malcolm Maclean, "D3 Tips and Tricks" 
             // http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
@@ -179,5 +175,3 @@ function draw(data, cityData) {
             .text(function (d) { return d; });
     });
 }
-
-// });
