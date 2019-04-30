@@ -18,9 +18,9 @@ class DepressionAnalyzer(object):
 
         if config.dropout > 0:
             char_emb = Dropout(config.dropout)(char_emb)
-        layers = Bidirectional(LSTM(units=config.word_lstm_units, return_sequences=True))(char_emb)
+        layers = Bidirectional(LSTM(units=config.word_lstm_units))(char_emb)
         layers = Dense(config.fc_units, activation='tanh')(layers)
-        output = Dense(1, activation='sigmoid'))(layers)
+        output = Dense(1, activation='sigmoid')(layers)
 
         self.model = Model(inputs=[char_ids], outputs=[output])
 

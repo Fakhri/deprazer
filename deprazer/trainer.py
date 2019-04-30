@@ -1,9 +1,9 @@
 import numpy as np
 
 from tensorflow.keras.optimizers import Adam, SGD
+from tensorflow.keras.callbacks import EarlyStopping
 
 from .reader import generate_batch
-from .callbacks import get_callbacks
 
 class Trainer(object):
 
