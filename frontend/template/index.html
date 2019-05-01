@@ -3,14 +3,21 @@
 	<script src="http://d3js.org/d3.v3.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="/static/css/map.css">
 	<link rel="stylesheet" type="text/css" href="/static/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/header.css">
+	<title>Deprazer</title>
 </head>
 
 <body>
-		<script src="/static/js/us-map.js"></script>
-		<script type="text/javascript">
+		<div class="content">
+			<div class="header-name">Deprazer</div>
+			<div class="header-tagline">
+				Depression rate analyzer for a better society
+			</div>
+			<script src="/static/js/us-map.js"></script>
+			<script type="text/javascript">
 			const data={{ data|safe }};
 			const cityData={{ city_data|safe }};
-;
 			draw(data, cityData);
-		</script>
+			</script>
+		</div>
 </body>
