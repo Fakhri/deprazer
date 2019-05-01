@@ -1,0 +1,20 @@
+<head>
+    <meta charset="utf-8">
+    <!-- <link rel="stylesheet" type="text/css" href="/static/css/style.css"> -->
+    <link rel="stylesheet" type="text/css" href="/static/css/header.css">
+    <title>Deprazer</title>
+</head>
+
+<body>
+    <div class="content">
+        <div class="header-name">Deprazer</div>
+        <div class="header-tagline">
+            Depression rate analyzer for a better society
+        </div>
+        <form action="{{ url_for('personal') }}" method="post">
+            <label>Twitter account: </label>
+            <input type="text" name="twitter_account">
+            <input type="submit">
+        </form>
+    </div>
+</body>

@@ -1,20 +1,28 @@
 import os
 import json
+import datetime
 
-from flask import Flask, render_template
+from flask import Flask, render_template, flash, request
+from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
+from service import get_verbose_area_depression_level, get_user_depression_level
 
 template_dir = os.path.abspath('./frontend/template')
 static_dir = os.path.abspath('./frontend/static')
 application = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 
-# class region():
-#     def __init__(self, name, depression, keywords):
-#         self.name = name
-#         self.depression = depression
-#         self.keywords = keywords
+today = datetime.date.today()
+one_day = datetime.timedelta(days=1)
+one_week = datetime.timedelta(weeks=1)
 
 @application.route("/")
-def home():
+def index():
+  # todo
+  # state_data = [
+  #   get_verbose_area_depression_level('Alabama', today - one_week),
+  #   get_verbose_area_depression_level('Alaska', today - one_week),
+  #   ...
+  # ]
+
   # sample data - start
   state_data = [
     {"state": "Alabama", "depression": 0.6, "keywords": "depression,anxiety,drug,love,suffer"},
@@ -79,5 +87,13 @@ def home():
 
   return render_template('index.html', data=json.dumps(state_data), city_data=json.dumps(city_data))
  
+@application.route("/personal", methods=['GET', 'POST'])
+def personal():
+    if request.method == 'POST': 
+      twitter_account = request.form['twitter_account']
+      user_depression_level = get_user_depression_level(twitter_account, today - one_week)
+    
+    return render_template("personal.html")
+
 if __name__ == "__main__":
     application.run(debug=True)
