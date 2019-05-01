@@ -10,7 +10,7 @@ def read_corpus(path):
 
     return corpus
 
-def generate_batch(corpus, batch_size, preprocessor=None, return_label=True):
+def generate_batch(corpus, batch_size, preprocessor=None, shuffle=True, return_label=True):
     num_batches_per_epoch = int((len(corpus) - 1) / batch_size) + 1
 
     def data_generator():
@@ -20,14 +20,17 @@ def generate_batch(corpus, batch_size, preprocessor=None, return_label=True):
         data_size = len(corpus)
 
         while True:
-            # Shuffle the data at each epoch
-            shuffle_indices = np.random.permutation(np.arange(data_size))
-            shuffled_corpus = corpus[shuffle_indices]
+            if shuffle:
+                # Shuffle the data at each epoch
+                shuffle_indices = np.random.permutation(np.arange(data_size))
+                new_corpus = corpus[shuffle_indices]
+            else:
+                new_corpus = corpus
 
             for batch_num in range(num_batches_per_epoch):
                 start_index = batch_num * batch_size
                 end_index = min((batch_num + 1) * batch_size, data_size)
-                data = shuffled_corpus[start_index: end_index]
+                data = new_corpus[start_index: end_index]
                 if preprocessor:
                     yield preprocessor.transform(data, return_label=return_label)
                 else:

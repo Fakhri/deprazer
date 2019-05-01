@@ -13,7 +13,7 @@ class Deprazer():
     def __init__(self, char_emb_size=25, char_lstm_units=25, word_lstm_units=100, fc_units=100,
                  dropout=0.5, batch_size=32,
                  optimizer='adam', learning_rate=0.001, lr_decay=0.9, clip_gradients=5.0,
-                 max_epoch=1, validation_split=0.1, early_stopping=True, patience=3):
+                 max_epoch=5, validation_split=0.1, early_stopping=True, patience=3):
         self.model_config = ModelConfig(char_emb_size, char_lstm_units, word_lstm_units, fc_units,
                                         dropout)
 
@@ -57,7 +57,7 @@ class Deprazer():
         pred_steps, pred_batches = generate_batch(np.asarray(pred_corpus),
                                                   self.trainer_config.batch_size,
                                                   preprocessor=self.preprocessor,
-                                                  return_label=False)
+                                                  shuffle=False, return_label=False)
         result = self.model.predict_generator(pred_batches, pred_steps)
         return np.squeeze(result)
 
