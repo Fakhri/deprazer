@@ -24,7 +24,6 @@ class DepressionAnalyzer(object):
 
         self.model = Model(inputs=[char_ids], outputs=[output])
 
-        print('Model Summary')
         print(self.model.summary())
 
     def predict(self, features):

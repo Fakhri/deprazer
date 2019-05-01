@@ -12,7 +12,7 @@ class Deprazer():
     def __init__(self, char_emb_size=25, char_lstm_units=25, word_lstm_units=100, fc_units=100,
                  dropout=0.5, batch_size=32,
                  optimizer='adam', learning_rate=0.001, lr_decay=0.9, clip_gradients=5.0,
-                 max_epoch=10, validation_split=0.1, early_stopping=True, patience=3):
+                 max_epoch=1, validation_split=0.1, early_stopping=True, patience=3):
         self.model_config = ModelConfig(char_emb_size, char_lstm_units, word_lstm_units, fc_units,
                                         dropout)
 
@@ -29,6 +29,7 @@ class Deprazer():
             sentence = self.preprocessor.remove_links(sentence)
             sentence = self.preprocessor.normalize_number(sentence)
             sentence = self.preprocessor.remove_nonpermitted_chars(sentence)
+            sentence = self.preprocessor.singularize_spaces(sentence)
             if len(sentence) > 5:
                 clean_corpus.append([sentence, element[1]])
 

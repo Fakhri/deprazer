@@ -59,6 +59,9 @@ class Preprocessor():
                 result += c
         return result
 
+    def singularize_spaces(self, text):
+        return ' '.join(text.split()).strip()
+
     def _get_char_ids(self, word):
         return [self.vocab_char[c] for c in word]
 
