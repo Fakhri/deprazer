@@ -10,7 +10,7 @@ def read_corpus(path):
 
     return corpus
 
-def generate_batch(corpus, batch_size, preprocessor=None):
+def generate_batch(corpus, batch_size, preprocessor=None, return_label=True):
     num_batches_per_epoch = int((len(corpus) - 1) / batch_size) + 1
 
     def data_generator():
@@ -29,7 +29,7 @@ def generate_batch(corpus, batch_size, preprocessor=None):
                 end_index = min((batch_num + 1) * batch_size, data_size)
                 data = shuffled_corpus[start_index: end_index]
                 if preprocessor:
-                    yield preprocessor.transform(data)
+                    yield preprocessor.transform(data, return_label=return_label)
                 else:
                     yield ([sentence for sentence in data])
 

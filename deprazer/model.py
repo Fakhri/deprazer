@@ -1,3 +1,4 @@
+import os
 import numpy as np
 
 from tensorflow.keras.layers import Input, Embedding, Masking, Dropout, LSTM, TimeDistributed, \
@@ -26,9 +27,9 @@ class DepressionAnalyzer(object):
 
         print(self.model.summary())
 
-    def predict(self, features):
-        y_pred = self.model.predict(features, batch_size=1)
-        return y_pred
+    # def predict(self, features):
+    #     y_pred = self.model.predict(features, batch_size=1)
+    #     return y_pred
 
     def save(self, file_path):
         self.model.save(file_path)

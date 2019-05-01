@@ -5,6 +5,7 @@ from .config import ModelConfig, TrainerConfig
 from .preprocessor import Preprocessor
 from .model import DepressionAnalyzer
 from .trainer import Trainer
+from .reader import generate_batch
 
 class Deprazer():
     model_file = 'model.h5'
@@ -40,8 +41,25 @@ class Deprazer():
         trainer = Trainer(self.model, self.trainer_config, preprocessor=self.preprocessor)
         trainer.train(np.asarray(clean_corpus))
 
-    # def evaluate(self, corpus):
-    #
+    def predict_corpus(self, corpus):
+        pred_corpus = []
+        for s in corpus:
+            sentence = self.preprocessor.remove_mentions(s)
+            sentence = self.preprocessor.remove_links(sentence)
+            sentence = self.preprocessor.normalize_number(sentence)
+            sentence = self.preprocessor.remove_nonpermitted_chars(sentence)
+            sentence = self.preprocessor.singularize_spaces(sentence)
+            if len(sentence) > 5:
+                pred_corpus.append([sentence])
+            else:
+                pred_corpus.append(['-'])
+
+        pred_steps, pred_batches = generate_batch(np.asarray(pred_corpus),
+                                                  self.trainer_config.batch_size,
+                                                  preprocessor=self.preprocessor,
+                                                  return_label=False)
+        result = self.model.predict_generator(pred_batches, pred_steps)
+        return np.squeeze(result)
 
     def save(self, dir_path):
         if not os.path.exists(dir_path):
