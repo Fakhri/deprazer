@@ -27,7 +27,7 @@ var path = d3.geo.path()               // path generator that will convert GeoJS
 
 // Define linear scale for output
 var color = d3.scale.linear()
-    .range(["rgb(210, 234, 192)", "rgb(224, 215, 148)", "rgb(234, 150, 93)", "rgb(234, 93, 93)"]);
+    .range(["rgb(206, 206, 206)", "rgb(224, 215, 148)", "rgb(234, 150, 93)", "rgb(234, 93, 93)"]);
 
 var legendText = ["Dangerous", "High", "Medium", "Low"];
 
