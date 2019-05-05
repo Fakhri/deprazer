@@ -44,8 +44,11 @@ class Preprocessor():
         words = text.split()
         result = []
         for w in words:
-            parts = urlparse(w)
-            if parts[1] == '':
+            try:
+                parts = urlparse(w)
+                if parts[1] == '':
+                    result.append(w)
+            except:
                 result.append(w)
         return ' '.join(result)
 

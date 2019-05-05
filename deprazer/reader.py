@@ -6,7 +6,7 @@ def read_corpus(path):
     with open(path, encoding='ISO-8859-2') as f:
         reader = csv.reader(f, delimiter=',')
         for row in reader:
-            corpus.append([row[1].strip().lower(), int(row[2])])
+            corpus.append([row[0].strip().lower(), int(row[1])])
 
     return corpus
 
