@@ -1,0 +1,12 @@
+click==6.7
+Flask==1.0.2
+itsdangerous==0.24
+Jinja2==2.10
+MarkupSafe==1.0
+Werkzeug==0.14.1
+tensorflow==2.0.0-alpha0
+numpy==1.14.6
+Flask==1.0.2
+Flask-Cors==3.0.6
+requests==2.19.1
+WTForms==2.2.1

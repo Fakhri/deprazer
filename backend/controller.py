@@ -1,29 +1,29 @@
-import os
 import json
 import datetime
+import importlib
 
-from flask import Flask, render_template, flash, request
 from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
-from service import get_verbose_area_depression_level, get_user_depression_level
+from backend.service import get_verbose_area_depression_level, get_user_depression_level
+from flask import Blueprint, request, json, render_template, request
+from flask_cors import CORS
 
-template_dir = os.path.abspath('./frontend/template')
-static_dir = os.path.abspath('./frontend/static')
-application = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
+controller = Blueprint("backend", __name__)
+CORS(controller)
 
 today = datetime.date.today()
 one_day = datetime.timedelta(days=1)
 one_week = datetime.timedelta(weeks=1)
 
-@application.route("/")
+@controller.route("/")
 def index():
-  # todo
-  # state_data = [
-  #   get_verbose_area_depression_level('Alabama', today - one_week),
-  #   get_verbose_area_depression_level('Alaska', today - one_week),
-  #   ...
-  # ]
+#   todo
+#   state_data = [
+#     get_verbose_area_depression_level('Alabama', today - one_week),
+#     get_verbose_area_depression_level('Alaska', today - one_week),
+#     ...
+#   ]
 
-  # sample data - start
+#   sample data - start
   state_data = [
     {"state": "Alabama", "depression": 0.6, "keywords": "depression,anxiety,drug,love,suffer"},
     {"state": "Alaska", "depression": 0.4,  "keywords": "depression,anxiety,drug,love,suffer"},
@@ -76,24 +76,24 @@ def index():
     {"state": "West Virginia", "depression": 0.6,  "keywords": "depression,anxiety,drug,love,suffer"},
     {"state": "Wyoming", "depression": 0.1,  "keywords": "depression,anxiety,drug,love,suffer"}
   ]
+#   sample data - end
 
-  city_data = [
-    {"depression": 14, "place": "New York City", "lat": 40.71455, "lon": -74.007124},
-    {"depression": 20, "place": "San Francisco", "lat": 37.7771187, "lon": -122.4196396},
-    {"depression": 10, "place": "Tucson", "lat": 32.22155, "lon": -110.9697571},
-    {"depression": 9, "place": "Washington DC", "lat": 38.8903694, "lon": -77.0319595}
-  ]
-  # sample data - end
-
-  return render_template('index.html', data=json.dumps(state_data), city_data=json.dumps(city_data))
+  return render_template('index.html', data=json.dumps(state_data), cityData=json.dumps("US"))
  
-@application.route("/personal", methods=['GET', 'POST'])
+@controller.route("/California")
+def region():
+  california_data = [
+    {"state": "California", "depression": 0.9,  "keywords": "hopeless,anxiety,drug,love,suffer"}
+  ]
+#   sample data - end
+
+  return render_template('index.html', data=json.dumps(california_data), cityData=json.dumps("California"))
+
+
+@controller.route("/personal", methods=['GET', 'POST'])
 def personal():
     if request.method == 'POST': 
       twitter_account = request.form['twitter_account']
       user_depression_level = get_user_depression_level(twitter_account, today - one_week)
     
     return render_template("personal.html")
-
-if __name__ == "__main__":
-    application.run(debug=True)
