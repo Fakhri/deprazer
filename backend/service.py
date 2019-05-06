@@ -6,8 +6,8 @@ model = Deprazer.load('model')
 depression_treshold = 0.5
 
 def get_tweets_by_account_and_time(twitter_account, from_date):
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_secret)
+    auth = tweepy.OAuthHandler("consumer_key", "consumer_secret")
+    auth.set_access_token("access_token", "access_secret")
 
     api = tweepy.API(auth)
 
