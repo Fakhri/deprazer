@@ -80,7 +80,7 @@ def index():
 
   return render_template('index.html', data=json.dumps(state_data), cityData=json.dumps("US"))
  
-@controller.route("/California")
+@controller.route("/detail/California")
 def region():
   california_data = [
     {"state": "California", "depression": 0.9,  "keywords": "hopeless,anxiety,drug,love,suffer"}
@@ -93,7 +93,12 @@ def region():
 @controller.route("/personal", methods=['GET', 'POST'])
 def personal():
     if request.method == 'POST': 
+      print("masuk")
       twitter_account = request.form['twitter_account']
       user_depression_level = get_user_depression_level(twitter_account, today - one_week)
+      print(user_depression_level)
+      return render_template("personal.html", input=twitter_account, result=user_depression_level["value"])
+    else:
+      print("keluar")
+      return render_template("personal.html")
     
-    return render_template("personal.html")

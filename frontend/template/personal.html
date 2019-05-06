@@ -1,20 +1,31 @@
 <head>
     <meta charset="utf-8">
-    <!-- <link rel="stylesheet" type="text/css" href="/static/css/style.css"> -->
+	<script src="/static/js/header.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/header.css">
     <title>Deprazer</title>
 </head>
 
 <body>
     <div class="content">
-        <div class="header-name">Deprazer</div>
+        <div onclick="redirect();" class="header-name">Deprazer</div>
         <div class="header-tagline">
             Depression rate analyzer for a better society
         </div>
-        <form action="{{ url_for('personal') }}" method="post">
+        <form action="{{ url_for('backend.personal') }}" method="post">
             <label>Twitter account: </label>
-            <input type="text" name="twitter_account">
+
+            {% if input %}
+                <input type="text" name="twitter_account" value="{{ input }}">
+            {% else %}
+                <input type="text" name="twitter_account">
+            {% endif %}
             <input type="submit">
         </form>
+        {% if result %}
+            <div>
+                <label>Result: </label>
+                <input type="text" value="{{ result }}" readonly>
+            </div>
+        {% endif %}
     </div>
 </body>

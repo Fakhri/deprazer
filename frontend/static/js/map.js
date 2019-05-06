@@ -127,7 +127,7 @@ function drawUS(data) {
             .on("click", function (d) {
                 console.log(d.properties.name);
                 if (d.properties.name == "California") {
-                    window.open(window.location + d.properties.name);
+                    window.open(window.location + 'detail/' + d.properties.name);
                 }
             });
         
