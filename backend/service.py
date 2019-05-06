@@ -29,7 +29,7 @@ def get_area_depression_level(area_name, from_date):
 def get_tweets_depression_level(tweets):
     # todo: get real tweets
     # corpus = tweets
-    corpus = ['so stressed']
+    corpus = ['so stressed', 'i feel bad']
     result = model.predict_corpus(corpus)
 
     # todo: get keywords correctly

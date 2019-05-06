@@ -109,12 +109,14 @@ function drawUS(data) {
             // Modification of custom tooltip code provided by Malcolm Maclean, "D3 Tips and Tricks" 
             // http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
             .on("mouseover", function (d) {
-                div.transition()
-                    .duration(200)
-                    .style("opacity", .9);
-                div.text(d.properties.keywords)
-                    .style("left", (d3.event.pageX) + "px")
-                    .style("top", (d3.event.pageY - 28) + "px");
+                if (d.properties.keywords && d.properties.keywords.length) {
+                    div.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    div.text(d.properties.keywords)
+                        .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                }
             })
 
             // fade out tooltip on mouse out               
@@ -159,7 +161,7 @@ function drawUS(data) {
 function drawCal(data) {
     var projection = d3.geo.albersUsa()
         .translate([width, height / 2])    // translate to center of screen
-        .scale([2000]);
+        .scale([2200]);
     var path = d3.geo.path()               // path generator that will convert GeoJSON to SVG paths
         .projection(projection);
 
@@ -221,12 +223,14 @@ function drawCal(data) {
             // Modification of custom tooltip code provided by Malcolm Maclean, "D3 Tips and Tricks" 
             // http://www.d3noob.org/2013/01/adding-tooltips-to-d3js-graph.html
             .on("mouseover", function (d) {
-                div.transition()
-                    .duration(200)
-                    .style("opacity", .9);
-                div.text(d.properties.keywords)
-                    .style("left", (d3.event.pageX) + "px")
-                    .style("top", (d3.event.pageY - 28) + "px");
+                if (d.properties.keywords && d.properties.keywords.length) {
+                    div.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    div.text(d.properties.keywords)
+                        .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
+                }
             })
 
             // fade out tooltip on mouse out               

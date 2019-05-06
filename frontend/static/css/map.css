@@ -29,3 +29,7 @@ body {
     left: 800px;
     top: 350px;
 }
+
+path {
+    cursor: pointer;
+}
