@@ -1,3 +1,4 @@
+import tweepy
 from deprazer.reader import read_corpus
 from deprazer.wrappers import Deprazer
 
@@ -5,15 +6,13 @@ model = Deprazer.load('model')
 depression_treshold = 0.5
 
 def get_tweets_by_account_and_time(twitter_account, from_date):
-    # todo: use twitter API or alternatives
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_secret)
 
-    # auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    # auth.set_access_token(access_token, access_secret)
-    #
-    # api = tweepy.API(auth)
-    #
-    # for status in tweepy.Cursor(api.home_timeline).items(10):
-    #     print(status.text)
+    api = tweepy.API(auth)
+
+    for tweet in api.user_timeline(screen_name=twitter_account, count=1):
+        print(tweet)
 
     return []
 
@@ -44,4 +43,3 @@ def get_tweets_depression_level(tweets):
     # todo: get keywords correctly
     keywords = ""
     return { "value": result, "keywords": keywords }
-
